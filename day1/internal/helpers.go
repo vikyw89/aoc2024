@@ -12,8 +12,12 @@ type NumberPair struct {
 	firstNumber  int
 	secondNumber int
 }
+type LeftAndRightNumbers struct {
+	leftNumberSlice   []int
+	secondNumberSlice []int
+}
 
-func TotalDistance() {
+func GetSortedLeftAndRightNumber() LeftAndRightNumbers {
 	fileByte, err := os.ReadFile("./input.txt")
 
 	if err != nil {
@@ -37,27 +41,10 @@ func TotalDistance() {
 	sort.Ints(leftNumberSlice)
 	sort.Ints(rightNumberSlice)
 
-	// get distance between numbers
-	distanceSlice := []int{}
-	for i := 0; i < len(leftNumberSlice); i++ {
-		distance := leftNumberSlice[i] - rightNumberSlice[i]
-		absoluteDistance := abs(distance)
-		distanceSlice = append(distanceSlice, absoluteDistance)
+	return LeftAndRightNumbers{
+		leftNumberSlice:   leftNumberSlice,
+		secondNumberSlice: rightNumberSlice,
 	}
-
-	totalDistance := 0
-	for _, distance := range distanceSlice {
-		totalDistance += distance
-	}
-
-	fmt.Println("Total distance: ", totalDistance)
-}
-
-func abs(number int) int {
-	if number < 0 {
-		return -number
-	}
-	return number
 }
 
 func extractNumberPair(lineString string) NumberPair {
@@ -84,6 +71,9 @@ func splitBySpace(lineString string) []string {
 	return strings.Split(lineString, " ")
 }
 
-func sortNumberSlice(numberSlice []int) []int {
-	return numberSlice
+func Abs(number int) int {
+	if number < 0 {
+		return -number
+	}
+	return number
 }
