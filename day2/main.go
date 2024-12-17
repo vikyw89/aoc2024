@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	// internal.Part1()
+	internal.Part1()
 	internal.Part2()
 }

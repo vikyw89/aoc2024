@@ -1,7 +1,7 @@
 package main
 
 import (
-	"day3/internal"
+	"day4/internal"
 )
 
 func main() {
