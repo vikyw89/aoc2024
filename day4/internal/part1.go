@@ -29,19 +29,3 @@ func Part1(path string) int {
 	println("Total found counter: ", foundCounter)
 	return foundCounter
 }
-
-// algo steps
-// track counter
-// track remaining letters
-// track allowed directions (up, down, left, right, ur, ul, dl, dr, any)
-// go to 1st coordinate
-// check if remaining letter is in the current coordinate
-// if no, reset remaining letters and go to next coordinate
-// if yes, remove from remaining letters
-// if remaining letters is empty, return counter
-// get surounding explorable coordinates
-// recursively call algo, with new coordinate, remaining letters, allowed directions
-// collect counters returned by the algo, sum it all
-
-// break case
-// if remaining letter is empty, return 1
