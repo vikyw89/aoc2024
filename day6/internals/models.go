@@ -23,9 +23,9 @@ type Direction int
 
 const (
 	UP Direction = iota
+	RIGHT
 	DOWN
 	LEFT
-	RIGHT
 )
 
 var DirectionName = map[Direction]string{

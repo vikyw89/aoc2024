@@ -1,6 +1,7 @@
 package internals
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/jinzhu/copier"
@@ -23,6 +24,7 @@ func GetMapMatrixAndGuardState(fileString string) (GuardState, MapMatrix) {
 
 			if char == '#' {
 				rowCells = append(rowCells, OBSTACLE)
+				continue
 			}
 
 			rowCells = append(rowCells, EMPTY)
@@ -33,6 +35,7 @@ func GetMapMatrixAndGuardState(fileString string) (GuardState, MapMatrix) {
 					x: x,
 					y: y,
 				}
+				continue
 			}
 
 			if char == 'v' {
@@ -41,6 +44,7 @@ func GetMapMatrixAndGuardState(fileString string) (GuardState, MapMatrix) {
 					x: x,
 					y: y,
 				}
+				continue
 			}
 
 			if char == '>' {
@@ -49,6 +53,7 @@ func GetMapMatrixAndGuardState(fileString string) (GuardState, MapMatrix) {
 					x: x,
 					y: y,
 				}
+				continue
 			}
 
 			if char == '<' {
@@ -57,6 +62,7 @@ func GetMapMatrixAndGuardState(fileString string) (GuardState, MapMatrix) {
 					x: x,
 					y: y,
 				}
+				continue
 			}
 		}
 
@@ -167,4 +173,70 @@ func GetUniqueVisitedCoordinates(visitedCoordinates []Coordinate) []Coordinate {
 	}
 
 	return uniqueCoordinates
+}
+
+func IsGuardLooping(guardState GuardState, mapMatrix MapMatrix) bool {
+	guardStateMap := make(map[GuardState]bool)
+
+	// TODO: cache
+	currentGuardState := GuardState{}
+	copier.CopyWithOption(&currentGuardState, &guardState, copier.Option{DeepCopy: true})
+
+	for {
+
+		nextGuardState, ok := GetGuardNextState(currentGuardState, mapMatrix)
+
+		if !ok {
+			return false
+		}
+
+		// if guard state is the same to initial state, return true
+
+		fmt.Println("Next guard state: ", nextGuardState)
+
+		if guardStateMap[nextGuardState] {
+			return true
+		}
+
+		guardStateMap[nextGuardState] = true
+
+		currentGuardState = nextGuardState
+
+	}
+}
+
+func GetPossibleObstacleCountToLoopGuard(mapMatrix MapMatrix, guardState GuardState) int {
+	currentGuardState := GuardState{}
+	copier.CopyWithOption(&currentGuardState, &guardState, copier.Option{DeepCopy: true})
+
+	visitedCoordinates := make(map[Coordinate]bool)
+	possibleObstacleCount := 0
+	for {
+		// place a new obstacle
+		// create a cloned map with new obstacle
+		nextGuardState, ok := GetGuardNextState(currentGuardState, mapMatrix)
+		currentGuardState = nextGuardState
+
+		if !ok {
+			return possibleObstacleCount
+		}
+
+		// if already visited, continue
+		if visitedCoordinates[currentGuardState.Coordinate] {
+			continue
+		}
+
+		visitedCoordinates[currentGuardState.Coordinate] = true
+
+		tempMapMatrix := MapMatrix{}
+		copier.CopyWithOption(&tempMapMatrix, &mapMatrix, copier.Option{DeepCopy: true})
+		tempMapMatrix[currentGuardState.Coordinate.y][currentGuardState.Coordinate.x] = OBSTACLE
+
+		// check if guard is looping
+		// use initial guard state
+		if IsGuardLooping(guardState, tempMapMatrix) {
+			possibleObstacleCount++
+		}
+
+	}
 }
