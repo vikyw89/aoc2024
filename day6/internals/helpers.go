@@ -80,11 +80,11 @@ func GetGuardNextState(guardState GuardState, mapMatrix MapMatrix) (GuardState, 
 	currentGuardState := GuardState{}
 	copier.Copy(&currentGuardState, &guardState)
 
-	remainingTurnCounter := 4
+	turnCounter := 0
 	for {
 
 		// check if turned back to original direction
-		if remainingTurnCounter == 0 {
+		if turnCounter >= 4 {
 			return currentGuardState, false
 		}
 
@@ -112,13 +112,14 @@ func GetGuardNextState(guardState GuardState, mapMatrix MapMatrix) (GuardState, 
 
 		// obstacle check
 		if mapMatrix[currentGuardState.Coordinate.y][currentGuardState.Coordinate.x] == EMPTY {
+
 			return currentGuardState, true
 		}
 
-		// obstacle, need to backtrack and rotate
-		copier.Copy(&currentGuardState, &guardState)
+		// obstacle, need to backtrack coordinate and rotate
+		currentGuardState.Coordinate = guardState.Coordinate
 
-		remainingTurnCounter--
+		turnCounter++
 		if currentGuardState.FacingDirection == UP {
 			currentGuardState.FacingDirection = RIGHT
 			continue
@@ -182,7 +183,6 @@ func GetUniqueVisitedCoordinates(visitedCoordinates []Coordinate) []Coordinate {
 func IsGuardLooping(guardState GuardState, mapMatrix MapMatrix) bool {
 	guardStateMap := make(map[GuardState]bool)
 
-	// TODO: cache
 	currentGuardState := GuardState{}
 	copier.Copy(&currentGuardState, &guardState)
 
