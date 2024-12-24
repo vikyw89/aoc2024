@@ -11,7 +11,6 @@ My solutions for [Advent of Code 2024](https://adventofcode.com/2024) implemente
 - [Day 4](./day4)
 - [Day 5](./day5)
 - [Day 6](./day6)
-- [Day 20](./day20)
 
 ### TypeScript (Deno) Solutions
 - [Day 7](./day7)
