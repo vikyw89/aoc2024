@@ -15,6 +15,7 @@ My solutions for [Advent of Code 2024](https://adventofcode.com/2024) implemente
 ### TypeScript (Deno) Solutions
 - [Day 7](./day7)
 - [Day 8](./day8)
+- [Day 9](./day9)
 
 ## Project Structure
 
