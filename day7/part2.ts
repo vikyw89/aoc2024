@@ -1,4 +1,4 @@
-import { getOperatorsToSolve } from "./solver.ts";
+import { getOperatorsToSolve } from "./helpers/solver.ts";
 
 export const part2 = (filePath: string): number => {
   const lines = Deno.readTextFileSync(filePath).split("\n");
@@ -13,11 +13,10 @@ export const part2 = (filePath: string): number => {
   let results = 0;
 
   for (const { total, numbers } of totalAndNumbers) {
-    console.log(`total: ${total}, numbers: ${numbers}`);
     const result = getOperatorsToSolve({
       numbers: numbers,
       target: total,
-      availableOperators: ["+", "*","||"],
+      availableOperators: ["+", "*", "||"],
     });
 
     if (result) {
